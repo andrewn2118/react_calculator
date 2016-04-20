@@ -18,7 +18,42 @@ var Calculator = React.createClass({
       });
     }
   },
-  evaluate(){
+  onKeyUp(e){
+    switch (e.which) {
+      case 13:
+        this.evaluate();
+        break;
+      case 27:
+        this.clearScreen();
+        break;
+      case 88:
+        this.setState({
+          operation: this.state.operation += 'x'
+        });
+        break;
+      case 187:
+        this.setState({
+          operation: this.state.operation += '+'
+        });
+        break;
+      case 189:
+        this.setState({
+          operation: this.state.operation += '-'
+        });
+        break;
+      case 191:
+        this.setState({
+          operation: this.state.operation += '/'
+        });
+        break;
+      case 48-57:
+        this.setState({
+          operation: this.state.operation += String.fromCharCode(e.which)
+        });
+        break;
+    };
+  },
+  evaluate(e){
     var matches = this.state.operation.match(matchSequence);
 
     if(matches){
@@ -33,28 +68,28 @@ var Calculator = React.createClass({
     return (
       <div id="calculator">
         <div id="screen-container">
-          <input id="screen" value={this.state.operation}/>
+          <input id="screen" value={this.state.operation} onKeyUp={this.onKeyUp}/>
         </div>
 
         <div id="button-container">
           <div className="buttons">
-            <span className="operator" id="cancel" onClick={this.clearScreen}>C</span>
-            <span className="operator" onClick={this.addClick}>/</span>
-            <span className="operator" onClick={this.addClick}>x</span>
-            <span onClick={this.addClick}>7</span>
-            <span onClick={this.addClick}>8</span>
-            <span onClick={this.addClick}>9</span>
-            <span className="operator" onClick={this.addClick}>-</span>
-            <span onClick={this.addClick}>4</span>
-            <span onClick={this.addClick}>5</span>
-            <span onClick={this.addClick}>6</span>
-            <span className="operator" onClick={this.addClick}>+</span>
-            <span onClick={this.addClick}>1</span>
-            <span onClick={this.addClick}>2</span>
-            <span onClick={this.addClick}>3</span>
-            <span className="operator" id="calc" onClick={this.evaluate}>=</span>
+            <span className="operator" id="cancel" onClick={this.clearScreen} onKeyUp={this.onKeyUp}>C</span>
+            <span className="operator" onClick={this.addClick} onKeyUp={this.onKeyUp}>/</span>
+            <span className="operator" onClick={this.addClick} onKeyUp={this.onKeyUp}>x</span>
+            <span onClick={this.addClick} onKeyUp={this.onKeyUp}>7</span>
+            <span onClick={this.addClick} onKeyUp={this.onKeyUp}>8</span>
+            <span onClick={this.addClick} onKeyUp={this.onKeyUp}>9</span>
+            <span className="operator" onClick={this.addClick} onKeyUp={this.onKeyUp}>-</span>
+            <span onClick={this.addClick} onKeyUp={this.onKeyUp}>4</span>
+            <span onClick={this.addClick} onKeyUp={this.onKeyUp}>5</span>
+            <span onClick={this.addClick} onKeyUp={this.onKeyUp}>6</span>
+            <span className="operator" onClick={this.addClick} onKeyUp={this.onKeyUp}>+</span>
+            <span onClick={this.addClick} onKeyUp={this.onKeyUp}>1</span>
+            <span onClick={this.addClick} onKeyUp={this.onKeyUp}>2</span>
+            <span onClick={this.addClick} onKeyUp={this.onKeyUp}>3</span>
+            <span className="operator" id="calc" onClick={this.evaluate} onKeyUp={this.onKeyUp}>=</span>
             <div className="l-row">
-              <span id="zero" onClick={this.addClick}>0</span>
+              <span id="zero" onClick={this.addClick} onKeyUp={this.onKeyUp}>0</span>
             </div>
           </div>
         </div>
@@ -76,5 +111,7 @@ function evaluationOperation(num1, num2, opt){
       return num1 * num2;
     case '/':
       return num1 / num2;
+    default:
+      return;
   };
 }
